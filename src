@@ -1,0 +1,94 @@
+-- Passo 1: Criar o Banco de Dados
+drop DATABASE sistema_de_controle_estoque;
+CREATE DATABASE sistema_de_controle_estoque;
+USE sistema_de_controle_estoque;
+
+-- Passo 2: Criar a Tabela `fornecedores`
+CREATE TABLE fornecedores (
+    idfornecedor INT AUTO_INCREMENT PRIMARY KEY,
+    nomefornecedor VARCHAR(100) NOT NULL,
+    contatofornecedor VARCHAR(100),
+    telefonefornecedor VARCHAR(20)
+);
+
+-- Passo 3: Criar a Tabela `produtos`
+CREATE TABLE produtos (
+    idproduto INT AUTO_INCREMENT PRIMARY KEY,
+    nomeproduto VARCHAR(100) NOT NULL,
+    quantidadeestoque INT NOT NULL,
+    precounitario DECIMAL(10, 2) NOT NULL,
+    idfornecedor INT,
+    FOREIGN KEY (idfornecedor) REFERENCES fornecedores(idfornecedor) ON DELETE CASCADE
+);
+
+-- Passo 4: Criar a Tabela `pedidosreposicao`
+CREATE TABLE pedidosreposicao (
+    idpedido INT AUTO_INCREMENT PRIMARY KEY,
+    idproduto INT,
+    quantidadereposicao INT NOT NULL,
+    datapedido DATE,
+    FOREIGN KEY (idproduto) REFERENCES produtos(idproduto) ON DELETE CASCADE
+);
+
+-- Passo 5: Inserir Dados Fictícios na Tabela `fornecedores`
+INSERT INTO fornecedores (nomefornecedor, contatofornecedor, telefonefornecedor)
+VALUES 
+('Fornecedor A', 'contatoA@empresa.com', '123456789'),
+('Fornecedor B', 'contatoB@empresa.com', '987654321'),
+('Fornecedor C', 'contatoC@empresa.com', '555555555');
+
+-- Passo 6: Inserir Dados Fictícios na Tabela `produtos`
+INSERT INTO produtos (nomeproduto, quantidadeestoque, precounitario, idfornecedor)
+VALUES 
+('Produto 1', 100, 10.50, 1),
+('Produto 2', 200, 20.00, 2),
+('Produto 3', 150, 15.75, 3),
+('Produto 4', 300, 8.25, 1);
+
+-- Passo 7: Inserir Dados Fictícios na Tabela `pedidosreposicao`
+INSERT INTO pedidosreposicao (idproduto, quantidadereposicao, datapedido)
+VALUES 
+(1, 50, '2023-09-01'),
+(2, 100, '2023-09-05'),
+(3, 75, '2023-09-10'),
+(4, 30, '2023-09-15');
+
+-- Passo 8: Consultas
+
+-- 8.1: Exibir todos os fornecedores
+SELECT * FROM fornecedores;
+
+-- 8.2: Exibir todos os produtos com informações dos fornecedores
+SELECT p.idproduto, p.nomeproduto, p.quantidadeestoque, p.precounitario, f.nomefornecedor 
+FROM produtos p
+JOIN fornecedores f ON p.idfornecedor = f.idfornecedor;
+
+-- 8.3: Exibir pedidos de reposição com nome dos produtos
+SELECT pr.idpedido, p.nomeproduto, pr.quantidadereposicao, pr.datapedido 
+FROM pedidosreposicao pr
+JOIN produtos p ON pr.idproduto = p.idproduto;
+
+-- 8.4: Consultar todos os produtos abaixo de 100 no estoque
+SELECT * FROM produtos WHERE quantidadeestoque < 100;
+
+-- Passo 9: Atualizações
+
+-- 9.1: Atualizar o telefone de um fornecedor
+UPDATE fornecedores
+SET telefonefornecedor = '1122334455'
+WHERE idfornecedor = 1;
+
+-- 9.2: Atualizar a quantidade de um produto em estoque
+UPDATE produtos
+SET quantidadeestoque = 250
+WHERE idproduto = 1;
+
+-- Passo 10: Exclusões
+
+-- 10.1: Excluir um pedido de reposição
+DELETE FROM pedidosreposicao
+WHERE idpedido = 1;
+
+-- 10.2: Excluir um produto
+DELETE FROM produtos
+WHERE idproduto = 4;
