@@ -1,0 +1,24 @@
+# Sistema de Controle de Estoque
+
+Este é um sistema simples de controle e gerenciamento de estoque, desenvolvido para gerenciar fornecedores, produtos e pedidos de reposição. O sistema utiliza um banco de dados MySQL para armazenar as informações.
+
+## Funcionalidades
+
+- **Gerenciamento de Fornecedores**: Cadastro e atualização de informações de fornecedores.
+- **Gerenciamento de Produtos**: Cadastro, atualização e visualização de produtos em estoque.
+- **Pedidos de Reposição**: Criação e acompanhamento de pedidos de reposição.
+
+## Estrutura do Banco de Dados
+
+O banco de dados `sistema_de_controle_estoque` possui as seguintes tabelas:
+
+1. **fornecedores**: Armazena informações dos fornecedores.
+2. **produtos**: Armazena informações dos produtos, incluindo referências a fornecedores.
+3. **pedidosreposicao**: Armazena informações sobre pedidos de reposição de produtos.
+
+## Como Configurar
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/usuario/repositorio.git
